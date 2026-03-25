@@ -112,7 +112,7 @@ namespace DiscordBotPlugin
                 }
 
                 // Construct the command to send
-                string command = $"say <{author}> {msg}";
+                string command = $"serverchat <{author}> {msg}";
 
                 if (application.ApplicationName == "Seven Days To Die")
                     command = $"say \"<{author}> {msg}\"";
