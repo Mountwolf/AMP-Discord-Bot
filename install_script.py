@@ -39,7 +39,7 @@ elif os.name == 'posix': # Linux
     base_path: Path = Path('/home/amp/.ampdata/instances/')
 
 developer_license_key: str = ''
-github_api_url: str = 'https://api.github.com/repos/Mountwolf/AMP-Discord-Bot/releases/latest'
+github_api_url: str = 'https://api.github.com/repos/winglessraven/AMP-Discord-Bot/releases/latest'
 plugin_name: str = 'DiscordBotPlugin'
 dll_file_name: str = f'{plugin_name}.dll'
 dll_file_path: Path = self.parent / dll_file_name
@@ -123,12 +123,27 @@ if __name__ == "__main__":
             developer_license_key = get_user_input("Set developer license key [Empty skips activation]", developer_license_key)
 
     # Download latest plugin dll
+    logger.info(f'Looking for asset: {dll_file_name}')
     with urllib.request.urlopen(github_api_url) as response:
         release_info = json.load(response)
+        logger.info(f'Release version: {release_info.get("tag_name", "Unknown")}')
+        logger.info(f'Available assets: {[asset["name"] for asset in release_info["assets"]]}')
+        
+        asset_url = None
         for asset in release_info['assets']:
+            logger.debug(f'Checking asset: {asset["name"]}')
             if asset['name'] == dll_file_name:
                 asset_url = asset['browser_download_url']
+                logger.info(f'Found matching asset: {asset["name"]}')
                 break
+        
+        if asset_url is None:
+            logger.error(f'Asset "{dll_file_name}" not found in release!')
+            logger.error(f'Expected: {dll_file_name}')
+            logger.error(f'Available: {[asset["name"] for asset in release_info["assets"]]}')
+            exit(1)
+        
+        logger.info(f'Downloading from: {asset_url}')
         download_latest_dll(asset_url, dll_file_path)
 
     # Get instance folders
