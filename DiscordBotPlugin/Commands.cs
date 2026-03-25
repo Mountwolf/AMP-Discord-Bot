@@ -117,6 +117,9 @@ namespace DiscordBotPlugin
                 if (application.ApplicationName == "Seven Days To Die")
                     command = $"say \"<{author}> {msg}\"";
 
+                if (application.ApplicationName == "Ark Survival Ascended")
+                    command = $"serverchat \"<{author}> {msg}\"";
+
                 if (application.ApplicationName == "Palworld")
                     command = $"broadcast <{author}>_{msg.Replace(" ","_")}";
 
