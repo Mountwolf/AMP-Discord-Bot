@@ -39,7 +39,7 @@ elif os.name == 'posix': # Linux
     base_path: Path = Path('/home/amp/.ampdata/instances/')
 
 developer_license_key: str = ''
-github_api_url: str = 'https://api.github.com/repos/winglessraven/AMP-Discord-Bot/releases/latest'
+github_api_url: str = 'https://api.github.com/repos/Mountwolf/AMP-Discord-Bot/releases/latest'
 plugin_name: str = 'DiscordBotPlugin'
 dll_file_name: str = f'{plugin_name}.dll'
 dll_file_path: Path = self.parent / dll_file_name
