@@ -125,10 +125,18 @@ if __name__ == "__main__":
     # Download latest plugin dll
     with urllib.request.urlopen(github_api_url) as response:
         release_info = json.load(response)
+        asset_url = None
         for asset in release_info['assets']:
             if asset['name'] == dll_file_name:
-                asset_url = asset['browser_download_url']
+                asset_url = asset.get('browser_download_url')
+                logger.info(f"Found asset '{dll_file_name}' with URL: {asset_url}")
                 break
+        
+        if not asset_url:
+            logger.error(f"Could not find asset '{dll_file_name}' or URL is empty in the release")
+            logger.info(f"Available assets: {[asset['name'] for asset in release_info['assets']]}")
+            raise ValueError(f"Asset '{dll_file_name}' not found or has no download URL in the GitHub release")
+        
         download_latest_dll(asset_url, dll_file_path)
 
     # Get instance folders
